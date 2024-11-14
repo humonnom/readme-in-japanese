@@ -66,7 +66,6 @@ async function run() {
         // 변경사항 커밋 및 푸시
         await commitAndPush(outputFile);
 
-        // 출력 설정
         core.setOutput('translated_file', outputFile);
         console.log(`Translation completed and pushed: ${outputFile}`);
 
