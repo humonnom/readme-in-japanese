@@ -41436,8 +41436,6 @@ async function configureGit() {
 async function commitAndPush(outputFile) {
     try {
         await exec.exec('git', ['add', outputFile]);
-
-        // Commit (exit code 1 if nothing to commit)
         try {
             await exec.exec('git', ['commit', '-m', `Update translation: ${outputFile}`]);
         } catch (error) {
@@ -41470,24 +41468,26 @@ async function run() {
         const content = await fs.readFile(sourceFile, 'utf8');
 
         // 번역 수행
-        const response = await openai.chat.completions.create({
-            model: "gpt-4",
-            messages: [
-                {
-                    role: "system",
-                    content: `You are a professional translator. Translate the given markdown content to ${targetLanguage} while preserving all markdown formatting, code blocks, and links.`
-                },
-                {
-                    role: "user",
-                    content: `Please translate the following markdown content to ${targetLanguage}:\n\n${content}`
-                }
-            ],
-            temperature: 0.3,
-            max_tokens: 4000
-        });
-
+        // const response = await openai.chat.completions.create({
+        //     model: "gpt-4",
+        //     messages: [
+        //         {
+        //             role: "system",
+        //             content: `You are a professional translator. Translate the given markdown content to ${targetLanguage} while preserving all markdown formatting, code blocks, and links.`
+        //         },
+        //         {
+        //             role: "user",
+        //             content: `Please translate the following markdown content to ${targetLanguage}:\n\n${content}`
+        //         }
+        //     ],
+        //     temperature: 0.3,
+        //     max_tokens: 4000
+        // });
+        //
         // 번역된 내용 저장
-        const translatedContent = response.choices[0].message.content;
+        // const translatedContent = response.choices[0].message.content;
+        // 파일 생성 테스트
+        const translatedContent = content;
         const outputFile = `README.${targetLanguage}.md`;
         await fs.writeFile(outputFile, translatedContent, 'utf8');
 
@@ -41504,6 +41504,7 @@ async function run() {
 }
 
 run();
+
 module.exports = __webpack_exports__;
 /******/ })()
 ;
