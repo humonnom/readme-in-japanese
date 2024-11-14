@@ -18,3 +18,5 @@ jobs:
     concurrency:
       group: build-main
       cancel-in-progress: true
+    with:
+      ref_name: refs/heads/main
