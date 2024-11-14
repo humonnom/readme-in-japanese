@@ -1,4 +1,4 @@
-name: Update Major Version Tag
+name: Build Dist and Update Major Version Tag on Release
 
 on:
   release:
