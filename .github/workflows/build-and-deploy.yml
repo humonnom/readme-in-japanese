@@ -8,6 +8,9 @@ on:
       - 'package-lock.json'
       - '.github/workflows/build-and-deploy.yml'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
