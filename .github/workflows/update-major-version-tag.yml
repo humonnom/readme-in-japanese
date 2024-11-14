@@ -22,13 +22,22 @@ jobs:
 
       - name: Check and update major version tag
         run: |
+          echo "GITHUB_REF: ${GITHUB_REF}"
           VERSION=${GITHUB_REF#refs/tags/}
+          echo "VERSION: ${VERSION}"
           MAJOR_VERSION="${VERSION%%.*}"
+          echo "MAJOR_VERSION: ${MAJOR_VERSION}"
           
-          # 기존 태그 삭제 (로컬과 원격 모두)
+          echo "Current git tags:"
+          git tag -l
+          
+          echo "Deleting existing major version tag..."
           git tag -d ${MAJOR_VERSION} || true
           git push --delete origin ${MAJOR_VERSION} || true
           
-          # 새로운 태그 생성 및 푸시
+          echo "Creating new major version tag..."
           git tag -a ${MAJOR_VERSION} -m "Update ${MAJOR_VERSION} tag to ${VERSION}"
           git push origin ${MAJOR_VERSION}
+          
+          echo "Final git tags:"
+          git tag -l
