@@ -7,10 +7,6 @@ inputs:
     description: 'Source README file path'
     required: false
     default: 'README.md'
-  #  target_language:
-  #    description: 'Target language for translation (ja, ko, en)'
-  #    required: false
-  #    default: 'ja'
   api_key:
     description: 'OpenAI API Key'
     required: true
