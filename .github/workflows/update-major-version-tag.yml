@@ -23,12 +23,13 @@ jobs:
       - name: Check and update major version tag
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
-          MAJOR_VERSION="v${VERSION%%.*}"
+          MAJOR_VERSION="${VERSION%%.*}"
           
           if ! git show-ref --tags --verify --quiet "refs/tags/${MAJOR_VERSION}"; then
             git tag -a ${MAJOR_VERSION} -m "Update ${MAJOR_VERSION} tag to ${VERSION}"
             git push origin ${MAJOR_VERSION}
           else
+            # 태그가 있으면 강제 업데이트
             git tag -fa ${MAJOR_VERSION} -m "Update ${MAJOR_VERSION} tag to ${VERSION}"
             git push --force origin ${MAJOR_VERSION}
           fi
