@@ -1,0 +1,23 @@
+{
+  "name": "readme-translator-action",
+  "version": "1.0.0",
+  "description": "GitHub Action to translate README files using OpenAI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "github",
+    "action",
+    "readme",
+    "translation",
+    "openai"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.0.0",
+    "openai": "^4.0.0"
+  }
+}

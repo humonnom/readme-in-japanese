@@ -1,0 +1,24 @@
+name: 'README AI Translator'
+description: 'Automatically translates README.md to multiple languages using OpenAI GPT-4'
+author: 'Your Name'
+
+inputs:
+  source_file:
+    description: 'Source README file path'
+    required: false
+    default: 'README.md'
+  #  target_language:
+  #    description: 'Target language for translation (ja, ko, en)'
+  #    required: false
+  #    default: 'ja'
+  api_key:
+    description: 'OpenAI API Key'
+    required: true
+
+runs:
+  using: 'node16'
+  main: 'index.js'
+
+branding:
+  icon: 'book'
+  color: 'blue'
