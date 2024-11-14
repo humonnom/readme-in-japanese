@@ -11,7 +11,7 @@ jobs:
   call-build:
     uses: ./.github/workflows/reusable-build.yml
     with:
-      cancel-in-progress: false
+      cancel-in-progress: true
   notify_failure:
     needs: call-build
     if: failure()

@@ -7,10 +7,6 @@ on:
       - 'package.json'
       - 'package-lock.json'
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 permissions:
   contents: write
 
@@ -18,4 +14,4 @@ jobs:
   call-build:
     uses: ./.github/workflows/reusable-build.yml
     with:
-      cancel-in-progress: true
+      cancel-in-progress: false
