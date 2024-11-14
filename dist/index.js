@@ -41451,7 +41451,6 @@ async function commitAndPush(outputFile) {
 
 async function run() {
     try {
-        // 입력 파라미터 가져오기
         const sourceFile = core.getInput('source_file');
         const targetLanguage = 'ja';
         const apiKey = core.getInput('api_key');
