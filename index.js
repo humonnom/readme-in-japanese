@@ -58,7 +58,6 @@ async function run() {
         //
         // 번역된 내용 저장
         // const translatedContent = response.choices[0].message.content;
-        // 파일 생성 테스트
         const translatedContent = content;
         const outputFile = `README.${targetLanguage}.md`;
         await fs.writeFile(outputFile, translatedContent, 'utf8');
