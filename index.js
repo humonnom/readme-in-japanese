@@ -36,13 +36,10 @@ async function run() {
             apiKey: apiKey
         });
 
-        // Git 설정
         await configureGit();
 
-        // README 파일 읽기
         const content = await fs.readFile(sourceFile, 'utf8');
 
-        // 번역 수행
         // const response = await openai.chat.completions.create({
         //     model: "gpt-4",
         //     messages: [
