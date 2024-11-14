@@ -8,6 +8,11 @@ on:
         required: false
         type: string
         default: ${{ github.ref_name }}
+      push_type:
+        description: 'Type of push(branch or tag)'
+        required: false
+        type: string
+        default: 'branch'
 
 jobs:
   build:
@@ -28,12 +33,21 @@ jobs:
       - name: Build with NCC
         run: npx @vercel/ncc build index.js -o dist
 
-      - name: Commit and push changes
+      - name: Configure Git
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add dist/index.js
           git commit -m "Build dist/index.js" || exit 0
-          git push -f origin HEAD:${{ inputs.ref_name }}
-          git tag -f ${{ inputs.ref_name }}
-          git push -f origin ${{ inputs.ref_name }}
+      #          git push -f origin HEAD:${{ inputs.ref_name }}
+      #          git tag -f ${{ inputs.ref_name }}
+      #          git push -f origin ${{ inputs.ref_name }}
+
+      - name: Push changes
+        run: |
+          if [[ "${{ inputs.push_type }}" == "tag" ]]; then
+            git tag -f ${{ inputs.ref_name }}
+            git push -f origin ${{ inputs.ref_name }}
+          else
+            git push -f origin HEAD:refs/heads/${{ inputs.ref_name }}
+          fi
