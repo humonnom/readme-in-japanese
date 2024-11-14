@@ -13,6 +13,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -31,4 +33,4 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add dist/index.js
           git commit -m "Build dist/index.js" || exit 0
-          git push
+          git push origin HEAD:${{ github.head_ref || github.ref_name }}
