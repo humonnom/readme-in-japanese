@@ -28,4 +28,3 @@ jobs:
         uses: your-username/readme-translator-action@v1
         with:
           api_key: ${{ secrets.OPENAI_API_KEY }}
-          target_language: 'ja'
