@@ -18,7 +18,6 @@ async function commitAndPush(outputFile) {
             return;
         }
 
-        // Push changes
         await exec.exec('git', ['push']);
     } catch (error) {
         throw new Error(`Failed to commit and push changes: ${error.message}`);
