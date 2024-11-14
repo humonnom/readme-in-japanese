@@ -41480,7 +41480,6 @@ async function run() {
         //     max_tokens: 4000
         // });
         //
-        // 번역된 내용 저장
         // const translatedContent = response.choices[0].message.content;
         const translatedContent = content;
         const outputFile = `README.${targetLanguage}.md`;
