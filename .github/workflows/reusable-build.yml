@@ -7,11 +7,19 @@ on:
         description: 'Cancel in-progress builds'
         required: true
         type: boolean
+      group:
+        description: 'Group name for concurrency'
+        required: true
+        type: string
+      ref_name:
+        description: 'Git ref to checkout'
+        required: false
+        type: string
+        default: ${{ github.ref_name }}
 
 concurrency:
-  group: 'build-operation'
+  group: ${{ github.event.inputs.group }}
   cancel-in-progress: ${{ inputs.cancel-in-progress }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -37,6 +45,6 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add dist/index.js
           git commit -m "Build dist/index.js" || exit 0
-          git push -f origin HEAD:${{ github.ref_name }}
-          git tag -f ${{ github.ref_name }}
-          git push -f origin ${{ github.ref_name }}
+          git push -f origin HEAD:${{ inputs.ref_name }}
+          git tag -f ${{ inputs.ref_name }}
+          git push -f origin ${{ inputs.ref_name }}

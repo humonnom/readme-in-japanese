@@ -2,6 +2,8 @@ name: Build and Deploy
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'index.js'
       - 'package.json'
@@ -14,4 +16,6 @@ jobs:
   call-build:
     uses: ./.github/workflows/reusable-build.yml
     with:
-      cancel-in-progress: false
+      group: build-main
+      cancel-in-progress: true
+      ref_name: main
