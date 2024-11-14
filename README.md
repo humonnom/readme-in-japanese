@@ -25,6 +25,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Translate README
-        uses: your-username/readme-translator-action@v1
+        uses: humonnom/translateme@v1
         with:
           api_key: ${{ secrets.OPENAI_API_KEY }}
