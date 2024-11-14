@@ -63,7 +63,6 @@ async function run() {
         const outputFile = `README.${targetLanguage}.md`;
         await fs.writeFile(outputFile, translatedContent, 'utf8');
 
-        // 변경사항 커밋 및 푸시
         await commitAndPush(outputFile);
 
         core.setOutput('translated_file', outputFile);
