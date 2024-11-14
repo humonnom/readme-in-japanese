@@ -17,3 +17,5 @@ permissions:
 jobs:
   call-build:
     uses: ./.github/workflows/reusable-build.yml
+    with:
+      cancel-in-progress: true

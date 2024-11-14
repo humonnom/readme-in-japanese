@@ -2,10 +2,15 @@ name: Reusable Build Workflow
 
 on:
   workflow_call:
+    inputs:
+      cancel-in-progress:
+        description: 'Cancel in-progress builds'
+        required: true
+        type: boolean
 
 concurrency:
   group: 'build-operation'
-  cancel-in-progress: true
+  cancel-in-progress: ${{ inputs.cancel-in-progress }}
 
 jobs:
   build:
