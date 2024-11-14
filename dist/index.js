@@ -41443,7 +41443,6 @@ async function commitAndPush(outputFile) {
             return;
         }
 
-        // Push changes
         await exec.exec('git', ['push']);
     } catch (error) {
         throw new Error(`Failed to commit and push changes: ${error.message}`);
@@ -41461,13 +41460,10 @@ async function run() {
             apiKey: apiKey
         });
 
-        // Git 설정
         await configureGit();
 
-        // README 파일 읽기
         const content = await fs.readFile(sourceFile, 'utf8');
 
-        // 번역 수행
         // const response = await openai.chat.completions.create({
         //     model: "gpt-4",
         //     messages: [
@@ -41486,15 +41482,12 @@ async function run() {
         //
         // 번역된 내용 저장
         // const translatedContent = response.choices[0].message.content;
-        // 파일 생성 테스트
         const translatedContent = content;
         const outputFile = `README.${targetLanguage}.md`;
         await fs.writeFile(outputFile, translatedContent, 'utf8');
 
-        // 변경사항 커밋 및 푸시
         await commitAndPush(outputFile);
 
-        // 출력 설정
         core.setOutput('translated_file', outputFile);
         console.log(`Translation completed and pushed: ${outputFile}`);
 
