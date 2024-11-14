@@ -8,7 +8,20 @@ permissions:
   contents: write
 
 jobs:
+  call-build:
+    uses: ./.github/workflows/reusable-build.yml
+  notify_failure:
+    needs: call-build
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify failure
+        run: |
+          echo "::error::Build job has failed!"
+          exit 1
   update-tag:
+    needs: call-build
+    if: success()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -1,0 +1,35 @@
+name: Reusable Build Workflow
+
+on:
+  workflow_call:
+
+concurrency:
+  group: 'build-operation'
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build with NCC
+        run: npx @vercel/ncc build index.js -o dist
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add dist/index.js
+          git commit -m "Build dist/index.js" || exit 0
+          git push origin HEAD:${{ github.head_ref || github.ref_name }}
