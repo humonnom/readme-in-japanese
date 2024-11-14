@@ -15,7 +15,8 @@ permissions:
 jobs:
   call-build:
     uses: ./.github/workflows/reusable-build.yml
-    with:
+    concurrency:
       group: build-main
       cancel-in-progress: true
+    with:
       ref_name: main

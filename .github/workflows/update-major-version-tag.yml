@@ -10,9 +10,10 @@ permissions:
 jobs:
   call-build:
     uses: ./.github/workflows/reusable-build.yml
-    with:
+    concurrency:
       group: build-{{ github.event.release.tag_name }}
       cancel-in-progress: true
+    with:
       ref_name: ${{ github.event.release.tag_name }}
   notify_failure:
     needs: call-build

@@ -3,23 +3,12 @@ name: Reusable Build Workflow
 on:
   workflow_call:
     inputs:
-      cancel-in-progress:
-        description: 'Cancel in-progress builds'
-        required: true
-        type: boolean
-      group:
-        description: 'Group name for concurrency'
-        required: true
-        type: string
       ref_name:
         description: 'Git ref to checkout'
         required: false
         type: string
         default: ${{ github.ref_name }}
 
-concurrency:
-  group: ${{ github.event.inputs.group }}
-  cancel-in-progress: ${{ inputs.cancel-in-progress }}
 jobs:
   build:
     runs-on: ubuntu-latest
