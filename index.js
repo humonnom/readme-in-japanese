@@ -11,8 +11,6 @@ async function configureGit() {
 async function commitAndPush(outputFile) {
     try {
         await exec.exec('git', ['add', outputFile]);
-
-        // Commit (exit code 1 if nothing to commit)
         try {
             await exec.exec('git', ['commit', '-m', `Update translation: ${outputFile}`]);
         } catch (error) {
