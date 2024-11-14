@@ -52,7 +52,7 @@ async function run() {
         //     temperature: 0.3,
         //     max_tokens: 4000
         // });
-        //
+
         // const translatedContent = response.choices[0].message.content;
         const translatedContent = content;
         const outputFile = `README.${targetLanguage}.md`;
