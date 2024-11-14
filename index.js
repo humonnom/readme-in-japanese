@@ -1,18 +1,45 @@
 const core = require('@actions/core');
+const exec = require('@actions/exec');
 const fs = require('fs').promises;
 const OpenAI = require('openai');
+
+async function configureGit() {
+    await exec.exec('git', ['config', '--global', 'user.email', 'github-actions[bot]@users.noreply.github.com']);
+    await exec.exec('git', ['config', '--global', 'user.name', 'github-actions[bot]']);
+}
+
+async function commitAndPush(outputFile) {
+    try {
+        await exec.exec('git', ['add', outputFile]);
+
+        // Commit (exit code 1 if nothing to commit)
+        try {
+            await exec.exec('git', ['commit', '-m', `Update translation: ${outputFile}`]);
+        } catch (error) {
+            console.log('No changes to commit');
+            return;
+        }
+
+        // Push changes
+        await exec.exec('git', ['push']);
+    } catch (error) {
+        throw new Error(`Failed to commit and push changes: ${error.message}`);
+    }
+}
 
 async function run() {
     try {
         // 입력 파라미터 가져오기
         const sourceFile = core.getInput('source_file');
-        // const targetLanguage = core.getInput('target_language');
         const targetLanguage = 'ja';
         const apiKey = core.getInput('api_key');
 
         const openai = new OpenAI({
             apiKey: apiKey
         });
+
+        // Git 설정
+        await configureGit();
 
         // README 파일 읽기
         const content = await fs.readFile(sourceFile, 'utf8');
@@ -39,9 +66,12 @@ async function run() {
         const outputFile = `README.${targetLanguage}.md`;
         await fs.writeFile(outputFile, translatedContent, 'utf8');
 
+        // 변경사항 커밋 및 푸시
+        await commitAndPush(outputFile);
+
         // 출력 설정
         core.setOutput('translated_file', outputFile);
-        console.log(`Translation completed: ${outputFile}`);
+        console.log(`Translation completed and pushed: ${outputFile}`);
 
     } catch (error) {
         core.setFailed(error.message);
