@@ -23,7 +23,7 @@ jobs:
   translate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Translate README
         uses: your-username/readme-translator-action@v1
         with:
