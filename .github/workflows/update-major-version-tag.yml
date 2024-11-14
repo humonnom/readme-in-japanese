@@ -25,11 +25,10 @@ jobs:
           VERSION=${GITHUB_REF#refs/tags/}
           MAJOR_VERSION="${VERSION%%.*}"
           
-          if ! git show-ref --tags --verify --quiet "refs/tags/${MAJOR_VERSION}"; then
-            git tag -a ${MAJOR_VERSION} -m "Update ${MAJOR_VERSION} tag to ${VERSION}"
-            git push origin ${MAJOR_VERSION}
-          else
-            # 태그가 있으면 강제 업데이트
-            git tag -fa ${MAJOR_VERSION} -m "Update ${MAJOR_VERSION} tag to ${VERSION}"
-            git push --force origin ${MAJOR_VERSION}
-          fi
+          # 기존 태그 삭제 (로컬과 원격 모두)
+          git tag -d ${MAJOR_VERSION} || true
+          git push --delete origin ${MAJOR_VERSION} || true
+          
+          # 새로운 태그 생성 및 푸시
+          git tag -a ${MAJOR_VERSION} -m "Update ${MAJOR_VERSION} tag to ${VERSION}"
+          git push origin ${MAJOR_VERSION}
