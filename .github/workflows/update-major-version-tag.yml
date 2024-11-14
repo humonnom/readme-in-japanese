@@ -2,7 +2,10 @@ name: Update Major Version Tag
 
 on:
   release:
-    types: [ published ]  # 새로운 릴리즈가 생성될 때 실행
+    types: [ published ]
+
+permissions:
+  contents: write
 
 jobs:
   update-tag:
@@ -10,23 +13,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 전체 git 히스토리를 가져옴
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
 
       - name: Check and update major version tag
         run: |
-          # 현재 릴리즈 버전 추출 (예: v1.0.3)
           VERSION=${GITHUB_REF#refs/tags/}
-          
-          # 메이저 버전 추출 (예: v1)
           MAJOR_VERSION="v${VERSION%%.*}"
           
-          # v1 태그 존재 여부 확인
           if ! git show-ref --tags --verify --quiet "refs/tags/${MAJOR_VERSION}"; then
-            # 태그가 없으면 생성
             git tag -a ${MAJOR_VERSION} -m "Update ${MAJOR_VERSION} tag to ${VERSION}"
             git push origin ${MAJOR_VERSION}
           else
-            # 태그가 있으면 강제 업데이트
             git tag -fa ${MAJOR_VERSION} -m "Update ${MAJOR_VERSION} tag to ${VERSION}"
             git push --force origin ${MAJOR_VERSION}
           fi
