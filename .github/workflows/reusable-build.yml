@@ -39,9 +39,6 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add dist/index.js
           git commit -m "Build dist/index.js" || exit 0
-      #          git push -f origin HEAD:${{ inputs.ref_name }}
-      #          git tag -f ${{ inputs.ref_name }}
-      #          git push -f origin ${{ inputs.ref_name }}
 
       - name: Push changes
         run: |
