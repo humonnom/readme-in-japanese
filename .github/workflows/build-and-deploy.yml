@@ -6,6 +6,7 @@ on:
       - 'index.js'
       - 'package.json'
       - 'package-lock.json'
+      - '.github/workflows/build-and-deploy.yml'
 
 jobs:
   build:
