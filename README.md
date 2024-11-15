@@ -62,7 +62,11 @@ See the official documentation for more information:
 
 ## Scenarios
 
+<!--
+Comments: Commented out for now, will be added in future updates 
+* [Translate with default source file](#translate-with-default-source-file)
 * [Translate with Specific Source File](#translate-with-specific-source-file)
+-->
 
 ### Translate with default source file
 
@@ -83,7 +87,9 @@ See the official documentation for more information:
 
 ## Examples
 
+<!--
 * [Translate README to Japanese when README.md is updated](#translate-readme-to-japanese-when-readmemd-is-updated)
+-->
 
 ### Translate README to Japanese when README.md is updated
 
