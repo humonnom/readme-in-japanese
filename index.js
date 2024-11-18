@@ -53,7 +53,10 @@ async function run() {
             max_tokens: 4000
         });
 
-        const translatedContent = response.choices[0].message.content;
+        const translatedContent = response.choices[0].message.content
+            .replace(/^(以下のマークダウンコンテンツを日本語に翻訳してください：\n*)/g, '')
+            .replace(/^(Please translate the following markdown content to .+:\n*)/g, '')
+            .trim();
         const outputFile = `README.${targetLanguage}.md`;
         await fs.writeFile(outputFile, translatedContent, 'utf8');
 
