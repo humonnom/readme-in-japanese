@@ -42,11 +42,11 @@ async function run() {
             messages: [
                 {
                     role: "system",
-                    content: `You are a professional translator. Translate the given markdown content to ${targetLanguage} while preserving all markdown formatting, code blocks, and links.`
+                    content: `You are a professional translator. Translate the given markdown content to ${targetLanguage} while preserving all markdown formatting, code blocks, and links. Do not include the translation instruction in your response. Start directly with the translated content.`
                 },
                 {
                     role: "user",
-                    content: `Please translate the following markdown content to ${targetLanguage}:\n\n${content}`
+                    content: content
                 }
             ],
             temperature: 0.3,
