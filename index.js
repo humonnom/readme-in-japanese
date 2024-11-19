@@ -15,7 +15,7 @@ const generateSystemCommands = async () => {
         console.log('Text files open failed:', error.message);
     }
 
-    const basic =
+    const general =
         `You are a professional translator.
 Translate the given markdown content to japanese while preserving all markdown formatting, code blocks, and links.
 Do not include the translation instruction in your response.
@@ -30,7 +30,7 @@ Editorial Guidelines:
 ${editorialGuidelines}
 `
 
-    return [basic, style].join('\n');
+    return [general, style].join('\n');
 }
 
 async function configureGit() {
