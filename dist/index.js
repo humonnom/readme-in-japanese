@@ -41435,13 +41435,15 @@ const core = __nccwpck_require__(5589);
 const exec = __nccwpck_require__(6493);
 const fs = (__nccwpck_require__(9896).promises);
 const OpenAI = __nccwpck_require__(9914);
+const path = __nccwpck_require__(6928);
 const styleGuide = __nccwpck_require__(5534);
 
 const generateSystemCommands = async () => {
     let editorialGuidelines = '';
 
     try {
-        editorialGuidelines = await fs.readFile('./editorial-guidelines.txt', 'utf8');
+        const filePath = __nccwpck_require__.ab + "editorial-guidelines.txt";
+        editorialGuidelines = await fs.readFile(__nccwpck_require__.ab + "editorial-guidelines.txt", 'utf8');
     } catch (error) {
         console.log('Text files open failed:', error.message);
     }
