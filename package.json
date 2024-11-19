@@ -13,7 +13,7 @@
     "translation",
     "openai"
   ],
-  "author": "Your Name",
+  "author": "humonnom",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.10.0",

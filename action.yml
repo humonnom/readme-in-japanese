@@ -1,6 +1,6 @@
 name: 'README AI Translator'
 description: 'Automatically translates README.md to multiple languages using OpenAI GPT-4'
-author: 'Your Name'
+author: 'humonnom'
 
 inputs:
   source_file:
