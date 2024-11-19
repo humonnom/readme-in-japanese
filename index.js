@@ -2,13 +2,15 @@ const core = require('@actions/core');
 const exec = require('@actions/exec');
 const fs = require('fs').promises;
 const OpenAI = require('openai');
+const path = require('path');
 const styleGuide = require('./style-guide.json');
 
 const generateSystemCommands = async () => {
     let editorialGuidelines = '';
 
     try {
-        editorialGuidelines = await fs.readFile('./editorial-guidelines.txt', 'utf8');
+        const filePath = path.join(__dirname, 'editorial-guidelines.txt');
+        editorialGuidelines = await fs.readFile(filePath, 'utf8');
     } catch (error) {
         console.log('Text files open failed:', error.message);
     }
