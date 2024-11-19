@@ -2,6 +2,34 @@ const core = require('@actions/core');
 const exec = require('@actions/exec');
 const fs = require('fs').promises;
 const OpenAI = require('openai');
+const styleGuide = require('./style-guide.json');
+
+const generateSystemCommands = async () => {
+    let editorialGuidelines = '';
+
+    try {
+        editorialGuidelines = await fs.readFile('./editorial-guidelines.txt', 'utf8');
+    } catch (error) {
+        console.log('Text files open failed:', error.message);
+    }
+
+    const basic =
+        `You are a professional translator.
+Translate the given markdown content to japanese while preserving all markdown formatting, code blocks, and links.
+Do not include the translation instruction in your response.
+Start directly with the translated content.`
+
+    const style =
+        `
+Translation Guidelines:
+${styleGuide["Translation Guidelines"].map(s => `- ${s}`).join('\n')}
+
+Editorial Guidelines:
+${editorialGuidelines}
+`
+
+    return [basic, style].join('\n');
+}
 
 async function configureGit() {
     await exec.exec('git', ['config', '--global', 'user.email', 'github-actions[bot]@users.noreply.github.com']);
@@ -26,7 +54,6 @@ async function commitAndPush(outputFile) {
 async function run() {
     try {
         const sourceFile = core.getInput('source_file');
-        const targetLanguage = 'ja';
         const apiKey = core.getInput('api_key');
 
         const openai = new OpenAI({
@@ -42,7 +69,7 @@ async function run() {
             messages: [
                 {
                     role: "system",
-                    content: `You are a professional translator. Translate the given markdown content to ${targetLanguage} while preserving all markdown formatting, code blocks, and links. Do not include the translation instruction in your response. Start directly with the translated content.`
+                    content: await generateSystemCommands()
                 },
                 {
                     role: "user",
@@ -57,7 +84,7 @@ async function run() {
             .replace(/^(以下のマークダウンコンテンツを日本語に翻訳してください：\n*)/g, '')
             .replace(/^(Please translate the following markdown content to .+:\n*)/g, '')
             .trim();
-        const outputFile = `README.${targetLanguage}.md`;
+        const outputFile = 'README.ja.md';
         await fs.writeFile(outputFile, translatedContent, 'utf8');
 
         await commitAndPush(outputFile);
