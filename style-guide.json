@@ -1,11 +1,11 @@
 {
   "Translation Guidelines": [
-    "This is a professional and technical document",
-    "Follow the JTF Style Guide",
-    "Apply Microsoft Japanese localization guide principles for technical documentation",
-    "Preserve clear and concise sentence structures",
-    "Use polite ~ます/~です form while maintaining a tone that is not overly formal",
-    "Avoid overly complex or verbose expressions",
+    "This is a professional and technical document.",
+    "Follow the JTF Style Guide.",
+    "Apply Microsoft Japanese localization guide principles for technical documentation.",
+    "Preserve clear and concise sentence structures.",
+    "Use polite ~ます/~です form while maintaining a tone that is not overly formal.",
+    "Avoid overly complex or verbose expressions.",
     "Translate only what you're sure is a comment inside a code block, and import the rest in its original form.",
     "When using the original English words, the capitalization should follow the original.",
     "Ensure consistency across the entire documentation and maintain consistent translations of technical terms."
