@@ -31717,6 +31717,41 @@ module.exports.implForWrapper = function (wrapper) {
 
 /***/ }),
 
+/***/ 2316:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const exec = __nccwpck_require__(6493);
+
+async function configureGit() {
+    await exec.exec('git', ['config', '--global', 'user.email', 'github-actions[bot]@users.noreply.github.com']);
+    await exec.exec('git', ['config', '--global', 'user.name', 'github-actions[bot]']);
+}
+
+async function commitAndPush(outputFile) {
+    try {
+        await exec.exec('git', ['add', outputFile]);
+        try {
+            await exec.exec('git', ['commit', '-m', `Update translation: ${outputFile}`]);
+        } catch (error) {
+            console.log('No changes to commit');
+            return;
+        }
+        await exec.exec('git', ['push']);
+    } catch (error) {
+        throw new Error(`Failed to commit and push changes: ${error.message}`);
+    }
+}
+
+const isGitHubAction = process.env.GITHUB_ACTIONS === 'true';
+
+module.exports = {
+    configureGit,
+    commitAndPush,
+    isGitHubAction
+};
+
+/***/ }),
+
 /***/ 7851:
 /***/ ((module) => {
 
@@ -41808,15 +41843,15 @@ module.exports = /*#__PURE__*/JSON.parse('{"General":["You are a professional tr
 /************************************************************************/
 var __webpack_exports__ = {};
 const core = __nccwpck_require__(5589);
-const exec = __nccwpck_require__(6493);
 const fs = (__nccwpck_require__(9896).promises);
 const OpenAI = __nccwpck_require__(9914);
 const path = __nccwpck_require__(6928);
 const instruction = __nccwpck_require__(1269);
 (__nccwpck_require__(6642).config)();
+const {configureGit, commitAndPush, isGitHubAction} = __nccwpck_require__(2316);
 
 const getInput = (name) => {
-    if (process.env.GITHUB_ACTIONS) {
+    if (isGitHubAction) {
         return core.getInput(name);
     }
     switch (name) {
@@ -41867,26 +41902,6 @@ async function saveTranslation(content, isGitHubAction = false) {
     }
 }
 
-async function configureGit() {
-    await exec.exec('git', ['config', '--global', 'user.email', 'github-actions[bot]@users.noreply.github.com']);
-    await exec.exec('git', ['config', '--global', 'user.name', 'github-actions[bot]']);
-}
-
-async function commitAndPush(outputFile) {
-    try {
-        await exec.exec('git', ['add', outputFile]);
-        try {
-            await exec.exec('git', ['commit', '-m', `Update translation: ${outputFile}`]);
-        } catch (error) {
-            console.log('No changes to commit');
-            return;
-        }
-        await exec.exec('git', ['push']);
-    } catch (error) {
-        throw new Error(`Failed to commit and push changes: ${error.message}`);
-    }
-}
-
 async function run() {
     try {
         const sourceFile = getInput('source_file');
@@ -41932,7 +41947,10 @@ async function run() {
         console.log(`Translation completed: ${outputFile}`);
 
     } catch (error) {
-        core.setFailed(error.message);
+        if (isGitHubAction) {
+            core.setFailed(error.message);
+        }
+        console.error('Translation failed:', error.message);
     }
 }
 
