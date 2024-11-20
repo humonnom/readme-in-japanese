@@ -23,7 +23,8 @@ Start directly with the translated content.
 
 ### "Follow the JTF Style Guide."
 
-* The [JTF Style Guide](https://www.jtf.jp/) is a professional style guide for Japanese translation, produced by the
+* The [JTF Style Guide](https://www.jtf.jp/tips/styleguide) is a professional style guide for Japanese translation,
+  produced by the
   Japan Translation
   Federation.
 * It is a comprehensive guide that covers various aspects of translation, including grammar, punctuation, and style.
@@ -66,6 +67,10 @@ Start directly with the translated content.
 
 ## Editorial
 
+* This translation guideline is part
+  of [Mozilla Japan's editorial guidelines](https://github.com/mozilla-japan/translation/wiki/Editorial-Guideline). See
+  the link for the original.
+    * SourceCoomit: cc0e2c8
 * Provides detailed style guidelines for areas where choices can be tricky in translation.
 * These include letters and numbers, units, katakana, and punctuation.
 
