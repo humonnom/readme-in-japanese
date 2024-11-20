@@ -55,7 +55,11 @@ See the official documentation for more information:
     api_key: ''  
 ```
 
-- The translated file is saved in the **same directory** as the source file, named `README.ja.md`.
+- The translated file is saved in the **same directory** as the source file,
+  named `${source_file name || 'README'}.ja.md`.
+    - For example, `translate-me.md` will be translated to `translate-me.ja.md`.
+    - If the source file is not specified, the default name `README.ja.md` is used.
+- If file already exists, it will be **overwritten**.
 
 ## Scenarios
 

@@ -4,7 +4,8 @@
   "description": "GitHub Action to translate README files using OpenAI",
   "main": "index.js",
   "scripts": {
-    "build": "npx @vercel/ncc build index.js -o dist && cp openai-instruction.json dist/ && cp japanese-editorial-guidelines.txt dist/"
+    "build": "npx @vercel/ncc build index.js -o dist && cp openai-instruction.json dist/ && cp japanese-editorial-guidelines.txt dist/",
+    "dev": "node index.js"
   },
   "keywords": [
     "github",
@@ -19,6 +20,7 @@
     "@actions/core": "^1.10.0",
     "@actions/exec": "^1.1.1",
     "@actions/github": "^5.0.0",
+    "dotenv": "^16.4.5",
     "openai": "^4.0.0"
   }
 }

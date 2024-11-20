@@ -1,9 +1,24 @@
 const core = require('@actions/core');
-const exec = require('@actions/exec');
 const fs = require('fs').promises;
 const OpenAI = require('openai');
 const path = require('path');
 const instruction = require('./openai-instruction.json');
+require('dotenv').config();
+const {configureGit, commitAndPush, isGitHubAction} = require('./utils/github');
+
+const getInput = (name) => {
+    if (isGitHubAction) {
+        return core.getInput(name);
+    }
+    switch (name) {
+        case 'source_file':
+            return process.env.SOURCE_FILE;
+        case 'api_key':
+            return process.env.OPENAI_API_KEY;
+        default:
+            return '';
+    }
+};
 
 const generateSystemCommands = async () => {
     let editorialGuidelines = '';
@@ -26,36 +41,37 @@ ${editorialGuidelines}
 `
 }
 
-async function configureGit() {
-    await exec.exec('git', ['config', '--global', 'user.email', 'github-actions[bot]@users.noreply.github.com']);
-    await exec.exec('git', ['config', '--global', 'user.name', 'github-actions[bot]']);
-}
+async function saveTranslation(content, isGitHubAction = false) {
+    const outputFile = path.basename(getInput('source_file')).replace('.md', '.ja.md');
 
-async function commitAndPush(outputFile) {
-    try {
-        await exec.exec('git', ['add', outputFile]);
-        try {
-            await exec.exec('git', ['commit', '-m', `Update translation: ${outputFile}`]);
-        } catch (error) {
-            console.log('No changes to commit');
-            return;
-        }
-        await exec.exec('git', ['push']);
-    } catch (error) {
-        throw new Error(`Failed to commit and push changes: ${error.message}`);
+    if (isGitHubAction) {
+        await fs.writeFile(outputFile, content, 'utf8');
+        await commitAndPush(outputFile);
+        return outputFile;
+    } else {
+        const outputDir = path.dirname(getInput('source_file'));
+        await fs.mkdir(outputDir, {recursive: true});
+        const outputPath = path.join(outputDir, outputFile);
+        await fs.writeFile(outputPath, content, 'utf8');
+        console.log(`Translation saved to: ${outputPath}`);
+        return outputPath;
     }
 }
 
 async function run() {
     try {
-        const sourceFile = core.getInput('source_file');
-        const apiKey = core.getInput('api_key');
+        const sourceFile = getInput('source_file');
+        const apiKey = getInput('api_key');
 
         const openai = new OpenAI({
             apiKey: apiKey
         });
 
-        await configureGit();
+        const isGitHubAction = !!process.env.GITHUB_ACTIONS;
+
+        if (isGitHubAction) {
+            await configureGit();
+        }
 
         const content = await fs.readFile(sourceFile, 'utf8');
 
@@ -79,16 +95,18 @@ async function run() {
             .replace(/^(以下のマークダウンコンテンツを日本語に翻訳してください：\n*)/g, '')
             .replace(/^(Please translate the following markdown content to .+:\n*)/g, '')
             .trim();
-        const outputFile = 'README.ja.md';
-        await fs.writeFile(outputFile, translatedContent, 'utf8');
+        const outputFile = await saveTranslation(translatedContent, isGitHubAction);
 
-        await commitAndPush(outputFile);
-
-        core.setOutput('translated_file', outputFile);
-        console.log(`Translation completed and pushed: ${outputFile}`);
+        if (isGitHubAction) {
+            core.setOutput('translated_file', outputFile);
+        }
+        console.log(`Translation completed: ${outputFile}`);
 
     } catch (error) {
-        core.setFailed(error.message);
+        if (isGitHubAction) {
+            core.setFailed(error.message);
+        }
+        console.error('Translation failed:', error.message);
     }
 }
 
