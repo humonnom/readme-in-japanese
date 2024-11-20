@@ -1,5 +1,5 @@
 {
-  "name": "readme-translator-action",
+  "name": "readme-in-japanese",
   "version": "1.0.0",
   "description": "GitHub Action to translate README files using OpenAI",
   "main": "index.js",

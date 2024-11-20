@@ -1,10 +1,10 @@
-# README AI Translator Action
+# Japanese AI Translator for README.md
 
-This GitHub action uses OpenAI's GPT-4 to automatically translate the README.md file into Japanese.
+This GitHub action uses OpenAI's GPT-4 to automatically translate the `README.md` file to Japanese.
 
 ## Introduction
 
-The README AI Translator Action simplifies the process of translating README files to japanese language, leveraging
+The action simplifies the process of translating `README.md` files to japanese language, leveraging
 the power of OpenAI's GPT-4 technology.
 
 By using this action, you can reach over [121 million](https://pontoon.mozilla.org/ja/)
@@ -55,7 +55,7 @@ See the official documentation for more information:
     api_key: ''  
 ```
 
-- The translated file is saved in the **same directory** as the source file, named README.ja.md.
+- The translated file is saved in the **same directory** as the source file, named `README.ja.md`.
 
 ## Scenarios
 
@@ -129,17 +129,17 @@ When specifying the action version, you have two approaches:
     * Specific examples
         * Scenario: Version update process
 
-        1. Initial latest release: v1.0.1
-        2. The v1 tag refers to the v1.0.1 commit
-        3. New patch release v1.0.2 is released
-        4. v1 tags automatically jump to v1.0.2 commit immediately
+        1. Initial latest release is v1.0.1.
+        2. The v1 tag refers to the v1.0.1 commit.
+        3. New patch release v1.0.2 is released.
+        4. v1 tags automatically jump to v1.0.2 commit immediately.
 
 
 2. **Specific Version Pinning**:
-    - For precise version control, specify the full version (e.g., `v1.0.7`)
-    - This locks the action to exactly that version, preventing automatic updates
+    - For precise version control, specify the full version (e.g., `v1.0.7`).
+    - This locks the action to exactly that version, preventing automatic updates.
 
 ## License
 
-The scripts and documentation in this project are released under the MIT License
+The scripts and documentation in this project are released under the MIT License.
 

@@ -1,5 +1,5 @@
-name: 'README AI Translator'
-description: 'Automatically translates README.md to multiple languages using OpenAI GPT-4'
+name: 'README in Japanese'
+description: 'Translate the `README.md` file into Japanese using OpenAI.'
 author: 'humonnom'
 
 inputs:
