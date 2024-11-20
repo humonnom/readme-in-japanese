@@ -1,9 +1,10 @@
-name: Build Dist on Main
+name: Build Dist on push
 
 on:
   push:
     branches:
       - main
+      - dev
     paths:
       - 'index.js'
       - 'package.json'
