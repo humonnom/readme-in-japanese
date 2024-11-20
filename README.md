@@ -41,7 +41,7 @@ See the official documentation for more information:
 ## Usage
 
 ```yaml
-- uses: humonnom/translateme@v1
+- uses: humonnom/readme-in-japanese@v1
   with:
     # Path to the source README file
     #
@@ -68,7 +68,7 @@ Comments: Commented out for now, will be added in future updates
 ### Translate with default source file
 
 ```yaml
-- uses: humonnom/translateme@v1
+- uses: humonnom/readme-in-japanese@v1
   with:
     api_key: ${{ secrets.OPENAI_API_KEY }}
 ```
@@ -76,7 +76,7 @@ Comments: Commented out for now, will be added in future updates
 ### Translate with Specific Source File
 
 ```yaml
-- uses: humonnom/translateme@v1
+- uses: humonnom/readme-in-japanese@v1
   with:
     source_file: docs/README.md # Path to the source README file
     api_key: ${{ secrets.OPENAI_API_KEY }}
@@ -104,7 +104,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Translate README
-        uses: humonnom/translateme@v1
+        uses: humonnom/readme-in-japanese@v1
         with:
           api_key: ${{ secrets.OPENAI_API_KEY }}
 ```
