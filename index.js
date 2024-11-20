@@ -9,7 +9,7 @@ const generateSystemCommands = async () => {
     let editorialGuidelines = '';
 
     try {
-        const filePath = path.join(__dirname, 'editorial-guidelines.txt');
+        const filePath = path.join(__dirname, 'japanese-editorial-guidelines.txt');
         editorialGuidelines = await fs.readFile(filePath, 'utf8');
     } catch (error) {
         console.log('Text files open failed:', error.message);
