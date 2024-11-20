@@ -1,13 +1,13 @@
 const core = require('@actions/core');
-const exec = require('@actions/exec');
 const fs = require('fs').promises;
 const OpenAI = require('openai');
 const path = require('path');
 const instruction = require('./openai-instruction.json');
 require('dotenv').config();
+const {configureGit, commitAndPush, isGitHubAction} = require('./utils/github');
 
 const getInput = (name) => {
-    if (process.env.GITHUB_ACTIONS) {
+    if (isGitHubAction) {
         return core.getInput(name);
     }
     switch (name) {
@@ -58,26 +58,6 @@ async function saveTranslation(content, isGitHubAction = false) {
     }
 }
 
-async function configureGit() {
-    await exec.exec('git', ['config', '--global', 'user.email', 'github-actions[bot]@users.noreply.github.com']);
-    await exec.exec('git', ['config', '--global', 'user.name', 'github-actions[bot]']);
-}
-
-async function commitAndPush(outputFile) {
-    try {
-        await exec.exec('git', ['add', outputFile]);
-        try {
-            await exec.exec('git', ['commit', '-m', `Update translation: ${outputFile}`]);
-        } catch (error) {
-            console.log('No changes to commit');
-            return;
-        }
-        await exec.exec('git', ['push']);
-    } catch (error) {
-        throw new Error(`Failed to commit and push changes: ${error.message}`);
-    }
-}
-
 async function run() {
     try {
         const sourceFile = getInput('source_file');
@@ -123,7 +103,10 @@ async function run() {
         console.log(`Translation completed: ${outputFile}`);
 
     } catch (error) {
-        core.setFailed(error.message);
+        if (isGitHubAction) {
+            core.setFailed(error.message);
+        }
+        console.error('Translation failed:', error.message);
     }
 }
 
