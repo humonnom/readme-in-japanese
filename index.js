@@ -42,15 +42,14 @@ ${editorialGuidelines}
 }
 
 async function saveTranslation(content, isGitHubAction = false) {
-    const outputFile = 'README.ja.md';
+    const outputFile = path.basename(getInput('source_file'));
 
     if (isGitHubAction) {
         await fs.writeFile(outputFile, content, 'utf8');
         await commitAndPush(outputFile);
         return outputFile;
     } else {
-        // 로컬 환경에서는 OUTPUT_DIR에 저장
-        const outputDir = process.env.OUTPUT_DIR || './output';
+        const outputDir = path.dirname(getInput('source_file'));
         await fs.mkdir(outputDir, {recursive: true});
         const outputPath = path.join(outputDir, outputFile);
         await fs.writeFile(outputPath, content, 'utf8');
@@ -117,8 +116,6 @@ async function run() {
             .replace(/^(Please translate the following markdown content to .+:\n*)/g, '')
             .trim();
         const outputFile = await saveTranslation(translatedContent, isGitHubAction);
-        // await fs.writeFile(outputFile, translatedContent, 'utf8');
-        // await commitAndPush(outputFile);
 
         if (isGitHubAction) {
             core.setOutput('translated_file', outputFile);
