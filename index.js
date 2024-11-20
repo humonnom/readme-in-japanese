@@ -4,6 +4,21 @@ const fs = require('fs').promises;
 const OpenAI = require('openai');
 const path = require('path');
 const instruction = require('./openai-instruction.json');
+require('dotenv').config();
+
+const getInput = (name) => {
+    if (process.env.GITHUB_ACTIONS) {
+        return core.getInput(name);
+    }
+    switch (name) {
+        case 'source_file':
+            return process.env.SOURCE_FILE;
+        case 'api_key':
+            return process.env.OPENAI_API_KEY;
+        default:
+            return '';
+    }
+};
 
 const generateSystemCommands = async () => {
     let editorialGuidelines = '';
@@ -24,6 +39,24 @@ ${instruction["Translation Guidelines"].map(s => `- ${s}`).join('\n')}
 Editorial Guidelines:
 ${editorialGuidelines}
 `
+}
+
+async function saveTranslation(content, isGitHubAction = false) {
+    const outputFile = 'README.ja.md';
+
+    if (isGitHubAction) {
+        await fs.writeFile(outputFile, content, 'utf8');
+        await commitAndPush(outputFile);
+        return outputFile;
+    } else {
+        // 로컬 환경에서는 OUTPUT_DIR에 저장
+        const outputDir = process.env.OUTPUT_DIR || './output';
+        await fs.mkdir(outputDir, {recursive: true});
+        const outputPath = path.join(outputDir, outputFile);
+        await fs.writeFile(outputPath, content, 'utf8');
+        console.log(`Translation saved to: ${outputPath}`);
+        return outputPath;
+    }
 }
 
 async function configureGit() {
@@ -48,14 +81,18 @@ async function commitAndPush(outputFile) {
 
 async function run() {
     try {
-        const sourceFile = core.getInput('source_file');
-        const apiKey = core.getInput('api_key');
+        const sourceFile = getInput('source_file');
+        const apiKey = getInput('api_key');
 
         const openai = new OpenAI({
             apiKey: apiKey
         });
 
-        await configureGit();
+        const isGitHubAction = !!process.env.GITHUB_ACTIONS;
+
+        if (isGitHubAction) {
+            await configureGit();
+        }
 
         const content = await fs.readFile(sourceFile, 'utf8');
 
@@ -79,13 +116,14 @@ async function run() {
             .replace(/^(以下のマークダウンコンテンツを日本語に翻訳してください：\n*)/g, '')
             .replace(/^(Please translate the following markdown content to .+:\n*)/g, '')
             .trim();
-        const outputFile = 'README.ja.md';
-        await fs.writeFile(outputFile, translatedContent, 'utf8');
+        const outputFile = await saveTranslation(translatedContent, isGitHubAction);
+        // await fs.writeFile(outputFile, translatedContent, 'utf8');
+        // await commitAndPush(outputFile);
 
-        await commitAndPush(outputFile);
-
-        core.setOutput('translated_file', outputFile);
-        console.log(`Translation completed and pushed: ${outputFile}`);
+        if (isGitHubAction) {
+            core.setOutput('translated_file', outputFile);
+        }
+        console.log(`Translation completed: ${outputFile}`);
 
     } catch (error) {
         core.setFailed(error.message);
