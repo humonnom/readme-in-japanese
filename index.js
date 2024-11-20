@@ -3,7 +3,7 @@ const exec = require('@actions/exec');
 const fs = require('fs').promises;
 const OpenAI = require('openai');
 const path = require('path');
-const styleGuide = require('./style-guide.json');
+const instruction = require('./openai-instruction.json');
 
 const generateSystemCommands = async () => {
     let editorialGuidelines = '';
@@ -15,22 +15,15 @@ const generateSystemCommands = async () => {
         console.log('Text files open failed:', error.message);
     }
 
-    const general =
-        `You are a professional translator.
-Translate the given markdown content to japanese while preserving all markdown formatting, code blocks, and links.
-Do not include the translation instruction in your response.
-Start directly with the translated content.`
-
-    const style =
-        `
+    return `
+${instruction["General"].map(s => `- ${s}`).join('\n')}
+        
 Translation Guidelines:
-${styleGuide["Translation Guidelines"].map(s => `- ${s}`).join('\n')}
+${instruction["Translation Guidelines"].map(s => `- ${s}`).join('\n')}
 
 Editorial Guidelines:
 ${editorialGuidelines}
 `
-
-    return [general, style].join('\n');
 }
 
 async function configureGit() {

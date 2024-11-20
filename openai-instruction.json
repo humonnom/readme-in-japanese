@@ -1,4 +1,10 @@
 {
+  "General": [
+    "You are a professional translator.",
+    "Translate the given markdown content to japanese while preserving all markdown formatting, code blocks, and links.",
+    "Do not include the translation instruction in your response.",
+    "Start directly with the translated content."
+  ],
   "Translation Guidelines": [
     "This is a professional and technical document.",
     "Follow the JTF Style Guide.",

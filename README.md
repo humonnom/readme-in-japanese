@@ -1,14 +1,13 @@
 # README AI Translator Action
 
-This GitHub Action automatically translates your README.md file to different languages using OpenAI's GPT-4, with a
-special focus on Japanese language translation.
+This GitHub action uses OpenAI's GPT-4 to automatically translate the README.md file into Japanese.
 
 ## Introduction
 
 The README AI Translator Action simplifies the process of translating README files to japanese language, leveraging
 the power of OpenAI's GPT-4 technology.
 
-By translating your README.md to Japanese, you can reach over [121 million](https://pontoon.mozilla.org/ja/)
+By using this action, you can reach over [121 million](https://pontoon.mozilla.org/ja/)
 Japanese-speaking developers and users, significantly expanding your project's accessibility in one of the world's
 largest tech communities.
 
@@ -29,7 +28,7 @@ This action has been optimized with special considerations for Japanese translat
 
 ## Requirements
 
-- Valid OpenAI API Key
+- Valid OpenAI API Key.
 
 <!--
 ## Documentation
@@ -56,9 +55,7 @@ See the official documentation for more information:
     api_key: ''  
 ```
 
-* Destination file
-    - The destination translated files are saved in the **same directory** as the source file
-    - File name: README.ja.md
+- The translated file is saved in the **same directory** as the source file, named README.ja.md.
 
 ## Scenarios
 
@@ -88,10 +85,10 @@ Comments: Commented out for now, will be added in future updates
 ## Examples
 
 <!--
-* [Translate README to Japanese when README.md is updated](#translate-readme-to-japanese-when-readmemd-is-updated)
+* [Translate when README.md is updated](#translate-readme-to-japanese-when-readmemd-is-updated)
 -->
 
-### Translate README to Japanese when README.md is updated
+### Translate when README.md is updated
 
 ```yaml
 name: Translate README
@@ -127,9 +124,16 @@ This action follows the [Semantic Versioning](https://semver.org/) convention fo
 When specifying the action version, you have two approaches:
 
 1. **Major Version Tracking**:
-    - Using `v1` will automatically use the latest patch release within the v1 major version
-    - Example: If the latest release is v1.0.7, `v1` will use v1.0.7
-    - When v1.0.8 is released, it will automatically update to v1.0.8
+    * The v1 tag automatically points to **the latest patch release within the v1 major version**.
+    * The tag is **dynamically updated** with the latest commit of that major version on an ongoing basis.
+    * Specific examples
+        * Scenario: Version update process
+
+        1. Initial latest release: v1.0.1
+        2. The v1 tag refers to the v1.0.1 commit
+        3. New patch release v1.0.2 is released
+        4. v1 tags automatically jump to v1.0.2 commit immediately
+
 
 2. **Specific Version Pinning**:
     - For precise version control, specify the full version (e.g., `v1.0.7`)
