@@ -41384,11 +41384,11 @@ module.exports = /*#__PURE__*/JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45
 
 /***/ }),
 
-/***/ 5534:
+/***/ 1269:
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"Translation Guidelines":["Follow the JTF Style Guide, using polite form (~ます/~です) consistently","Apply Microsoft Japanese localization guide principles for technical documentation","Maintain consistent translation of technical terms","Preserve clear and concise sentence structures","Eliminate unnecessary explanations","When using the original English words, the capitalization should follow the original.","This is a professional and technical document","Use polite ~ます/~です form while maintaining a tone that is not overly formal","Use clear and concise Japanese appropriate for technical documentation","Prioritize readability and technical accuracy","Use standard technical terminology","Maintain a professional and neutral tone","Avoid overly complex or verbose expressions","Ensure consistency across the entire document","Avoid unnecessary spaces inside and outside parentheses, brackets, and quotation marks","Add Japanese polite verb endings (such as します)","Translate only what you\'re sure is a comment inside a code block, and import the rest in its original form."]}');
+module.exports = /*#__PURE__*/JSON.parse('{"General":["You are a professional translator.","Translate the given markdown content to japanese while preserving all markdown formatting, code blocks, and links.","Do not include the translation instruction in your response.","Start directly with the translated content."],"Translation Guidelines":["This is a professional and technical document.","Follow the JTF Style Guide.","Apply Microsoft Japanese localization guide principles for technical documentation.","Preserve clear and concise sentence structures.","Use polite ~ます/~です form while maintaining a tone that is not overly formal.","Avoid overly complex or verbose expressions.","Translate only what you\'re sure is a comment inside a code block, and import the rest in its original form.","When using the original English words, the capitalization should follow the original.","Ensure consistency across the entire documentation and maintain consistent translations of technical terms."]}');
 
 /***/ })
 
@@ -41436,34 +41436,27 @@ const exec = __nccwpck_require__(6493);
 const fs = (__nccwpck_require__(9896).promises);
 const OpenAI = __nccwpck_require__(9914);
 const path = __nccwpck_require__(6928);
-const styleGuide = __nccwpck_require__(5534);
+const instruction = __nccwpck_require__(1269);
 
 const generateSystemCommands = async () => {
     let editorialGuidelines = '';
 
     try {
-        const filePath = __nccwpck_require__.ab + "editorial-guidelines.txt";
-        editorialGuidelines = await fs.readFile(__nccwpck_require__.ab + "editorial-guidelines.txt", 'utf8');
+        const filePath = __nccwpck_require__.ab + "japanese-editorial-guidelines.txt";
+        editorialGuidelines = await fs.readFile(__nccwpck_require__.ab + "japanese-editorial-guidelines.txt", 'utf8');
     } catch (error) {
         console.log('Text files open failed:', error.message);
     }
 
-    const basic =
-        `You are a professional translator.
-Translate the given markdown content to japanese while preserving all markdown formatting, code blocks, and links.
-Do not include the translation instruction in your response.
-Start directly with the translated content.`
-
-    const style =
-        `
+    return `
+${instruction["General"].map(s => `- ${s}`).join('\n')}
+        
 Translation Guidelines:
-${styleGuide["Translation Guidelines"].map(s => `- ${s}`).join('\n')}
+${instruction["Translation Guidelines"].map(s => `- ${s}`).join('\n')}
 
 Editorial Guidelines:
 ${editorialGuidelines}
 `
-
-    return [basic, style].join('\n');
 }
 
 async function configureGit() {
