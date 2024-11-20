@@ -42,7 +42,7 @@ ${editorialGuidelines}
 }
 
 async function saveTranslation(content, isGitHubAction = false) {
-    const outputFile = path.basename(getInput('source_file'));
+    const outputFile = path.basename(getInput('source_file')).replace('.md', '.ja.md');
 
     if (isGitHubAction) {
         await fs.writeFile(outputFile, content, 'utf8');
